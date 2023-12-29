@@ -2,6 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import pathlib
 import urllib.parse
 import mimetypes
+import socket
 
 
 class HttpHandler(BaseHTTPRequestHandler):
@@ -16,6 +17,18 @@ class HttpHandler(BaseHTTPRequestHandler):
                 self.send_static()
             else:
                 self.send_html_file('error.html', 404)
+
+    def do_POST(self):
+        data = self.rfile.read(int(self.headers['Content-Length']))
+        print(data)
+        data_parse = urllib.parse.unquote_plus(data.decode())
+        print(data_parse)
+        data_dict = {key: value for key, value in [
+            el.split('=') for el in data_parse.split('&')]}
+        print(data_dict)
+        self.send_response(302)
+        self.send_header('Location', '/')
+        self.end_headers()
 
     def send_html_file(self, filename, status=200):
         self.send_response(status)
