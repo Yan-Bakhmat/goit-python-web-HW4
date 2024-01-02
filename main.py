@@ -4,6 +4,7 @@ import pathlib
 import urllib.parse
 import mimetypes
 import socket
+import json
 import threading
 import datetime
 
@@ -33,7 +34,7 @@ def run_server(ip, port):
 # socket client
 
 
-def run_client(ip, port):
+def run_client(ip, port, MESSAGE):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server = ip, port
     for line in MESSAGE.split(' '):
@@ -100,5 +101,3 @@ def run(server_class=HTTPServer, handler_class=HttpHandler):
 
 if __name__ == '__main__':
     run()
-    run_server(UDP_IP, UDP_PORT)
-    run_client(UDP_IP, UDP_PORT)
